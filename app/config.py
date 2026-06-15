@@ -79,6 +79,8 @@ class ProductionConfig(BaseConfig):
     @classmethod
     def validate(cls) -> None:
         secret = os.environ.get("SECRET_KEY", "")
+        database_url = os.environ.get("DATABASE_URL", "")
+        rate_limit_url = os.environ.get("RATELIMIT_STORAGE_URI", "")
         if not secret or secret == _DEV_SECRET:
             raise RuntimeError(
                 "SECRET_KEY privalo būti nustatytas produkcijoje (>= 32 baitų atsitiktinis). "
@@ -91,6 +93,10 @@ class ProductionConfig(BaseConfig):
                 "ADMIN_PASSWORD_HASH privalo būti nustatytas produkcijoje. "
                 "Sugeneruokite su: flask --app manage admin-hash"
             )
+        if not database_url:
+            raise RuntimeError("DATABASE_URL privalo būti nustatytas produkcijoje")
+        if not rate_limit_url or rate_limit_url == "memory://":
+            raise RuntimeError("RATELIMIT_STORAGE_URI produkcijoje turi naudoti Redis")
 
 
 CONFIG_MAP = {

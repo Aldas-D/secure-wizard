@@ -147,12 +147,13 @@ def _register_error_handlers(app: Flask) -> None:
 def _register_cli_commands(app: Flask) -> None:
     from scripts.admin_commands import admin_hash_command
     from scripts.db_commands import drop_db_command, init_db_command
-    from scripts.seed_db import seed_command
+    from scripts.seed_db import prepare_db_command, seed_command
 
     app.cli.add_command(seed_command)
     app.cli.add_command(init_db_command)
     app.cli.add_command(drop_db_command)
     app.cli.add_command(admin_hash_command)
+    app.cli.add_command(prepare_db_command)
 
 
 def _register_request_context(app: Flask) -> None:

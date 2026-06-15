@@ -4,7 +4,7 @@ import csv
 import io
 from dataclasses import dataclass
 
-from sqlalchemy import delete, func, or_, select
+from sqlalchemy import case, delete, func, or_, select
 from sqlalchemy.orm import joinedload
 
 from app.extensions import db
@@ -54,7 +54,7 @@ class AdminService:
             select(
                 Platform.name,
                 func.count(Session.id),
-                func.sum(func.cast(Session.completed, db.Integer)),
+                func.sum(case((Session.completed.is_(True), 1), else_=0)),
             )
             .outerjoin(Session, Session.platform_id == Platform.id)
             .group_by(Platform.id, Platform.name)

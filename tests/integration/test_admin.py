@@ -1,7 +1,8 @@
 """Administravimo srities integraciniai testai."""
 from werkzeug.security import generate_password_hash
 
-from app.models import Question
+from app.extensions import db as database
+from app.models import Question, Session
 
 
 def _login(client, app):
@@ -30,6 +31,22 @@ def test_admin_login_and_report(client, app, platform_win):
     response = client.get("/admin/reports/sessions.csv")
     assert response.status_code == 200
     assert response.mimetype == "text/csv"
+
+
+def test_admin_dashboard_counts_completed_sessions(client, app, platform_win):
+    database.session.add_all(
+        [
+            Session(token_hash="a" * 64, platform_id=platform_win.id, completed=True),
+            Session(token_hash="b" * 64, platform_id=platform_win.id, completed=False),
+        ]
+    )
+    database.session.commit()
+    _login(client, app)
+
+    response = client.get("/admin/")
+
+    assert response.status_code == 200
+    assert b"50%" in response.data
 
 
 def test_invalid_admin_hash_does_not_crash(client, app):

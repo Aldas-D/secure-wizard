@@ -19,6 +19,18 @@ DATA_DIR = Path(__file__).parent.parent / "app" / "data"
 @with_appcontext
 def seed_command(reset: bool) -> None:
     """Užpildo DB klausimynais ir patikros veiksmais."""
+    seed_data(reset)
+
+
+@click.command("prepare-db")
+@with_appcontext
+def prepare_db_command() -> None:
+    """Sukuria lenteles ir įkelia pradinius duomenis."""
+    db.create_all()
+    seed_data(False)
+
+
+def seed_data(reset: bool) -> None:
     if reset:
         click.echo("Valomi esami duomenys...")
         SessionAnswer.query.delete()
