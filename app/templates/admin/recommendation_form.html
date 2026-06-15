@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{% if item %}Redaguoti rekomendaciją{% else %}Nauja rekomendacija{% endif %}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-6 pt-10 pb-12">
+    <a href="{{ url_for('admin.recommendations') }}" class="text-sm text-ink-muted hover:text-ink">Grįžti į rekomendacijas</a>
+    <h1 class="text-3xl font-semibold text-ink tracking-tight mt-2 mb-7">{% if item %}Redaguoti rekomendaciją{% else %}Nauja rekomendacija{% endif %}</h1>
+
+    <form method="POST" class="bg-surface border border-line rounded-xl p-6 space-y-5">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="grid sm:grid-cols-3 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-ink mb-2">Platforma</label>
+                <select name="platform" class="w-full rounded-lg border border-line px-3 py-2.5 text-sm bg-white">
+                    {% for platform in platforms %}
+                    <option value="{{ platform.code }}" {% if item and item.platform.code == platform.code %}selected{% endif %}>{{ platform.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-ink mb-2">Rizikos sritis</label>
+                <select name="risk_area" class="w-full rounded-lg border border-line px-3 py-2.5 text-sm bg-white">
+                    {% for code, label in risk_areas.items() %}
+                    <option value="{{ code }}" {% if item and item.risk_area == code %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-ink mb-2">Prioritetas</label>
+                <input name="priority" type="number" min="1" max="5" value="{{ item.priority if item else 3 }}" required class="w-full rounded-lg border border-line px-3 py-2.5 text-sm">
+            </div>
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-ink mb-2">Pavadinimas</label>
+            <input name="title" value="{{ item.title if item else '' }}" required class="w-full rounded-lg border border-line px-3 py-2.5 text-sm">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-ink mb-2">Veiksmo aprašymas</label>
+            <textarea name="description" rows="5" required class="w-full rounded-lg border border-line px-3 py-2.5 text-sm">{{ item.description if item else '' }}</textarea>
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-ink mb-2">Kada kreiptis į specialistą</label>
+            <textarea name="when_specialist" rows="3" class="w-full rounded-lg border border-line px-3 py-2.5 text-sm">{{ item.when_specialist if item and item.when_specialist else '' }}</textarea>
+        </div>
+        <button class="px-5 py-2.5 bg-ink text-white text-sm font-medium rounded-lg">Išsaugoti</button>
+    </form>
+</div>
+{% endblock %}

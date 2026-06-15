@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Įrenginio saugumo patikra. Anonimiška, nemokama, 5 minutės.">
+    <meta name="theme-color" content="#FAFAF9">
+    <title>{% block title %}Saugumo patikra{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
+</head>
+<body class="min-h-screen bg-canvas text-ink antialiased">
+
+<nav class="border-b border-line bg-canvas/80 backdrop-blur-sm sticky top-0 z-10">
+    <div class="max-w-5xl mx-auto px-6 py-3.5 flex justify-between items-center">
+        <a href="{{ url_for('main.index') }}" class="flex items-center gap-2.5 group">
+            <svg class="w-6 h-6 text-brand-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <span class="font-semibold text-ink text-[15px] tracking-tight">Saugumo patikra</span>
+        </a>
+        <div class="flex items-center gap-4">
+            {% if session.get('admin_authenticated') %}
+                <a href="{{ url_for('admin.dashboard') }}" class="text-sm font-medium text-brand-700 hover:text-brand-900 transition-colors">
+                    Administravimas
+                </a>
+            {% endif %}
+            <a href="{{ url_for('quiz.start') }}" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-ink-secondary hover:text-ink transition-colors">
+                Pradėti patikrą
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="max-w-2xl mx-auto px-6 pt-6">
+                {% for category, message in messages %}
+                    <div class="px-4 py-3 rounded-lg text-sm border animate-fade-in
+                        {% if category == 'error' %}bg-danger-50 text-danger-600 border-danger-500/30
+                        {% elif category == 'warning' %}bg-warning-50 text-warning-600 border-warning-500/30
+                        {% else %}bg-brand-50 text-brand-700 border-brand-500/30{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="border-t border-line mt-20">
+    <div class="max-w-5xl mx-auto px-6 py-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-sm text-ink-muted">
+        <p>VU KnF · Akademinis projektas, 2026</p>
+        <div class="flex items-center gap-5">
+            <a href="{{ url_for('main.privacy') }}" class="hover:text-ink transition-colors">Privatumo pranešimas</a>
+            <span class="text-ink-faint">·</span>
+            <a href="{{ url_for('admin.login') }}" class="hover:text-ink transition-colors">Administratoriui</a>
+        </div>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

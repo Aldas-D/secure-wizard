@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Klausimų administravimas{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-6 pt-10 pb-12">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-7">
+        <div>
+            <a href="{{ url_for('admin.dashboard') }}" class="text-sm text-ink-muted hover:text-ink">Administravimas</a>
+            <h1 class="text-3xl font-semibold text-ink tracking-tight mt-2">Klausimai</h1>
+        </div>
+        <a href="{{ url_for('admin.question_new') }}" class="inline-flex justify-center px-4 py-2.5 bg-ink text-white text-sm font-medium rounded-lg">Naujas klausimas</a>
+    </div>
+
+    <form method="GET" class="grid sm:grid-cols-[1fr_180px_auto] gap-3 mb-5">
+        <input name="q" value="{{ search }}" placeholder="Ieškoti klausimo tekste"
+               class="rounded-lg border border-line px-3 py-2.5 text-sm">
+        <select name="platform" class="rounded-lg border border-line px-3 py-2.5 text-sm bg-white">
+            <option value="">Visos platformos</option>
+            {% for platform in platforms %}
+            <option value="{{ platform.code }}" {% if selected_platform == platform.code %}selected{% endif %}>{{ platform.name }}</option>
+            {% endfor %}
+        </select>
+        <button class="px-4 py-2.5 border border-line rounded-lg text-sm font-medium bg-surface">Filtruoti</button>
+    </form>
+
+    <div class="space-y-3">
+        {% for question in questions %}
+        <div class="bg-surface border border-line rounded-xl p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+            <div class="flex-1">
+                <div class="flex items-center gap-2 text-xs text-ink-muted mb-2">
+                    <span class="font-semibold text-brand-700">{{ question.platform.code }}</span>
+                    <span>·</span>
+                    <span>{{ question.order_num }} klausimas</span>
+                    <span>·</span>
+                    <span>{{ question.answers|length }} atsakymai</span>
+                </div>
+                <h2 class="font-semibold text-ink">{{ question.text }}</h2>
+                <p class="text-sm text-ink-muted mt-1">{{ question.risk_areas|join(', ') }} · {{ question.q_type }}</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <a href="{{ url_for('admin.question_edit', question_id=question.id) }}" class="px-3 py-2 border border-line rounded-lg text-sm font-medium">Redaguoti</a>
+                <form method="POST" action="{{ url_for('admin.question_delete', question_id=question.id) }}" data-confirm="Ištrinti klausimą?">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="px-3 py-2 text-sm font-medium text-danger-600">Šalinti</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="bg-surface border border-line rounded-xl p-8 text-center text-ink-secondary">Klausimų pagal filtrą nerasta.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

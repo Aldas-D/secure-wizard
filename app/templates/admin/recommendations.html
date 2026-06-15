@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Rekomendacijų administravimas{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-6 pt-10 pb-12">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-7">
+        <div>
+            <a href="{{ url_for('admin.dashboard') }}" class="text-sm text-ink-muted hover:text-ink">Administravimas</a>
+            <h1 class="text-3xl font-semibold text-ink tracking-tight mt-2">Rekomendacijos</h1>
+        </div>
+        <a href="{{ url_for('admin.recommendation_new') }}" class="inline-flex justify-center px-4 py-2.5 bg-ink text-white text-sm font-medium rounded-lg">Nauja rekomendacija</a>
+    </div>
+
+    <form method="GET" class="grid md:grid-cols-[1fr_160px_180px_auto] gap-3 mb-5">
+        <input name="q" value="{{ search }}" placeholder="Ieškoti pavadinime ar apraše" class="rounded-lg border border-line px-3 py-2.5 text-sm">
+        <select name="platform" class="rounded-lg border border-line px-3 py-2.5 text-sm bg-white">
+            <option value="">Visos platformos</option>
+            {% for platform in platforms %}<option value="{{ platform.code }}" {% if selected_platform == platform.code %}selected{% endif %}>{{ platform.name }}</option>{% endfor %}
+        </select>
+        <select name="risk_area" class="rounded-lg border border-line px-3 py-2.5 text-sm bg-white">
+            <option value="">Visos sritys</option>
+            {% for code, label in risk_areas.items() %}<option value="{{ code }}" {% if selected_risk_area == code %}selected{% endif %}>{{ label }}</option>{% endfor %}
+        </select>
+        <button class="px-4 py-2.5 border border-line rounded-lg text-sm font-medium bg-surface">Filtruoti</button>
+    </form>
+
+    <div class="space-y-3">
+        {% for item in items %}
+        <div class="bg-surface border border-line rounded-xl p-5 flex flex-col sm:flex-row gap-4">
+            <div class="flex-1">
+                <div class="flex gap-2 text-xs font-medium text-ink-muted mb-2">
+                    <span class="text-brand-700">{{ item.platform.code }}</span>
+                    <span>·</span><span>{{ risk_areas.get(item.risk_area, item.risk_area) }}</span>
+                    <span>·</span><span>P{{ item.priority }}</span>
+                </div>
+                <h2 class="font-semibold text-ink">{{ item.title }}</h2>
+                <p class="text-sm text-ink-secondary mt-1 line-clamp-2">{{ item.description }}</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <a href="{{ url_for('admin.recommendation_edit', item_id=item.id) }}" class="px-3 py-2 border border-line rounded-lg text-sm font-medium">Redaguoti</a>
+                <form method="POST" action="{{ url_for('admin.recommendation_delete', item_id=item.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="px-3 py-2 text-sm font-medium text-danger-600">Šalinti</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="bg-surface border border-line rounded-xl p-8 text-center text-ink-secondary">Rekomendacijų pagal filtrą nerasta.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

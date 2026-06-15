@@ -1,0 +1,124 @@
+{
+  "platform": {
+    "code": "AND",
+    "name": "Android",
+    "description": "Išmanusis telefonas arba planšetė su Android OS"
+  },
+  "questions": [
+    {
+      "order": 1,
+      "text": "Ar jūsų Android sistema atnaujinta?",
+      "type": "single",
+      "risk_areas": ["UPD"],
+      "answers": [
+        {"text": "Naudoju naujausią Android versiją", "weight": 0},
+        {"text": "Atnaujinu kai gaunu pranešimą", "weight": 3},
+        {"text": "Atidedu atnaujinimus", "weight": 7},
+        {"text": "Mano telefonas daugiau atnaujinimų negauna", "weight": 9}
+      ]
+    },
+    {
+      "order": 2,
+      "text": "Iš kur parsisiunčiate programėles?",
+      "type": "single",
+      "risk_areas": ["APP"],
+      "answers": [
+        {"text": "Tik iš Google Play", "weight": 0},
+        {"text": "Iš Play ir kartais iš oficialios svetainės (pvz. F-Droid)", "weight": 2},
+        {"text": "Iš APK failų, kuriuos randu internete", "weight": 9},
+        {"text": "Iš nuorodų, kurias atsiunčia draugai", "weight": 8}
+      ]
+    },
+    {
+      "order": 3,
+      "text": "Ar jūsų telefonas užrakintas?",
+      "type": "single",
+      "risk_areas": ["ACC"],
+      "answers": [
+        {"text": "Taip, PIN arba biometrika (pirštas, veidas)", "weight": 0},
+        {"text": "Slankymo užraktas (be PIN)", "weight": 7},
+        {"text": "Ne, atsidaro iš karto", "weight": 9}
+      ]
+    },
+    {
+      "order": 4,
+      "text": "Kokius leidimus duodate programėlėms?",
+      "type": "single",
+      "risk_areas": ["APP", "ACC"],
+      "answers": [
+        {"text": "Tikrinu leidimus, atsisakau nereikalingų", "weight": 0},
+        {"text": "Duodu, jei programa neveikia be jų", "weight": 4},
+        {"text": "Spaudžiu „Leisti“ visada, nekreipiu dėmesio", "weight": 9}
+      ]
+    },
+    {
+      "order": 5,
+      "text": "Ar jūsų Google paskyra apsaugota 2FA?",
+      "type": "single",
+      "risk_areas": ["ACC", "PWD"],
+      "answers": [
+        {"text": "Taip, naudoju 2FA su autentifikatoriaus programa", "weight": 0},
+        {"text": "Taip, SMS žinutėmis", "weight": 2},
+        {"text": "Ne, tik slaptažodis", "weight": 8},
+        {"text": "Nežinau, ar įjungta", "weight": 6}
+      ]
+    },
+    {
+      "order": 6,
+      "text": "Ar jūsų telefone yra root teisės?",
+      "type": "single",
+      "risk_areas": ["ACC", "APP"],
+      "answers": [
+        {"text": "Ne, telefonas neperdarytas", "weight": 0},
+        {"text": "Taip, padariau root", "weight": 7},
+        {"text": "Nežinau, kas tai", "weight": 1}
+      ]
+    },
+    {
+      "order": 7,
+      "text": "Ką darote su nuorodomis SMS žinutėse iš nepažįstamų?",
+      "type": "single",
+      "risk_areas": ["NET", "APP"],
+      "answers": [
+        {"text": "Iš karto trinu, neatidaru", "weight": 0},
+        {"text": "Atidaru, jei atrodo svarbu", "weight": 9},
+        {"text": "Visada paklausiu draugo prieš atidarydamas", "weight": 3}
+      ]
+    },
+    {
+      "order": 8,
+      "text": "Ar jungiatės prie atvirų Wi-Fi tinklų?",
+      "type": "single",
+      "risk_areas": ["NET"],
+      "answers": [
+        {"text": "Ne, naudoju tik mobilų internetą arba savo Wi-Fi", "weight": 0},
+        {"text": "Tik su VPN", "weight": 1},
+        {"text": "Jungiuosi be jokios apsaugos", "weight": 8}
+      ]
+    },
+    {
+      "order": 9,
+      "text": "Kaip dažnai peržiūrite, kokios programėlės įdiegtos telefone?",
+      "type": "single",
+      "risk_areas": ["APP"],
+      "answers": [
+        {"text": "Bent kartą per mėnesį šalinu nereikalingas", "weight": 0},
+        {"text": "Kartais peržiūriu", "weight": 3},
+        {"text": "Niekada nepatikrinu", "weight": 7}
+      ]
+    },
+    {
+      "order": 10,
+      "text": "Ar pastebėjote nestandartinį telefono elgesį pastaruoju metu?",
+      "type": "multiple",
+      "risk_areas": ["APP", "NET"],
+      "answers": [
+        {"text": "Nepastebėjau nieko įtartino", "weight": 0},
+        {"text": "Greitai senka baterija be aiškios priežasties", "weight": 6},
+        {"text": "Pasirodo nepažįstami pranešimai arba reklamos", "weight": 8},
+        {"text": "Telefonas šyla net be naudojimo", "weight": 6},
+        {"text": "Atsiranda nežinomos programėlės", "weight": 10}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Privatumo pranešimas{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-6 pt-10 pb-12">
+
+    <div class="mb-10">
+        <p class="text-xs font-semibold text-brand-600 uppercase tracking-wider mb-3">Teisinė informacija</p>
+        <h1 class="text-3xl sm:text-4xl font-semibold text-ink tracking-tight mb-2">Privatumo pranešimas</h1>
+        <p class="text-sm text-ink-muted">Paskutinį kartą atnaujinta: 2026 m. gegužės mėn.</p>
+    </div>
+
+    <div class="bg-success-50 border border-success-500/30 rounded-lg p-4 mb-10">
+        <div class="flex items-start gap-3">
+            <svg class="w-4 h-4 text-success-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            <div>
+                <p class="font-semibold text-ink text-sm mb-1">Trumpa versija</p>
+                <p class="text-sm text-ink-secondary leading-relaxed">
+                    Neprašome jūsų vardo, el. pašto ar telefono numerio. Klausimyno atsakymai susiejami tik su laikina anonimine sesija ir automatiškai ištrinami pasibaigus jos galiojimo laikui.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <section class="mb-10">
+        <h2 class="text-lg font-semibold text-ink mb-3 tracking-tight">Duomenų valdytojas</h2>
+        <p class="text-ink-secondary leading-relaxed">
+            Vilniaus universiteto Kauno fakulteto Informacijos sistemų ir kibernetinės saugos studijų programos akademinis projektas. Sistema kuriama mokymo tikslais.
+        </p>
+    </section>
+
+    <section class="mb-10">
+        <h2 class="text-lg font-semibold text-ink mb-3 tracking-tight">Kokie duomenys renkami</h2>
+        <p class="text-ink-secondary leading-relaxed mb-4">
+            Sistemai veikti būtinas tik minimumas techninių duomenų:
+        </p>
+        <ul class="space-y-2.5 text-ink-secondary">
+            <li class="flex items-start gap-3">
+                <span class="text-ink-faint mt-1">·</span>
+                <span><strong class="text-ink font-semibold">Sesijos žetonas:</strong> atsitiktinė unikali eilutė, o duomenų bazėje saugoma tik jos vienkryptė SHA-256 maiša.</span>
+            </li>
+            <li class="flex items-start gap-3">
+                <span class="text-ink-faint mt-1">·</span>
+                <span><strong class="text-ink font-semibold">Jūsų atsakymai:</strong> tik kaip skaičiai, ne kaip tekstas.</span>
+            </li>
+            <li class="flex items-start gap-3">
+                <span class="text-ink-faint mt-1">·</span>
+                <span><strong class="text-ink font-semibold">Sesijos laikas:</strong> patikros pradžios, paskutinio aktyvumo ir užbaigimo laikas.</span>
+            </li>
+            <li class="flex items-start gap-3">
+                <span class="text-ink-faint mt-1">·</span>
+                <span><strong class="text-ink font-semibold">IP adresas:</strong> trumpai naudojamas užklausų ribojimui ir serverio saugumo žurnaluose. Produkcijoje žurnalų saugojimo terminą nustato sistemos administratorius.</span>
+            </li>
+        </ul>
+
+        <div class="mt-5 bg-danger-50 border border-danger-500/30 rounded-lg p-4">
+            <p class="font-semibold text-danger-600 text-sm mb-1 uppercase tracking-wider">Ko nerenkame</p>
+            <p class="text-sm text-ink-secondary leading-relaxed">
+                Vardo. Pavardės. El. pašto. Telefono. Tikslios vietos. Naršyklės pirštų atspaudų. Reklaminių slapukų. Trečiųjų šalių sekimo scenarijų.
+            </p>
+        </div>
+    </section>
+
+    <section class="mb-10">
+        <h2 class="text-lg font-semibold text-ink mb-3 tracking-tight">Kam duomenys naudojami</h2>
+        <p class="text-ink-secondary leading-relaxed">
+            Tik vienam tikslui, t.y. sugeneruoti jums asmeninį saugumo patikros planą. Duomenys nėra perduodami trečiosioms šalims, neparduodami ir nenaudojami reklamai.
+        </p>
+    </section>
+
+    <section class="mb-10">
+        <h2 class="text-lg font-semibold text-ink mb-3 tracking-tight">Kiek laiko saugome</h2>
+        <p class="text-ink-secondary leading-relaxed">
+            Sesijos duomenys ištrinami automatiškai po 60 minučių neaktyvumo. Periodinis valymo procesas pasenusias sesijas pašalina kas valandą.
+        </p>
+    </section>
+
+    <section class="mb-10">
+        <h2 class="text-lg font-semibold text-ink mb-3 tracking-tight">Jūsų teisės pagal BDAR</h2>
+        <p class="text-ink-secondary leading-relaxed mb-4">
+            Net jei nerenkame asmens duomenų, jūs visada turite teisę:
+        </p>
+        <ul class="space-y-2 text-sm text-ink-secondary">
+            <li class="flex items-start gap-3">
+                <svg class="w-4 h-4 text-success-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Žinoti, kokie duomenys apie jus saugomi</span>
+            </li>
+            <li class="flex items-start gap-3">
+                <svg class="w-4 h-4 text-success-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Reikalauti juos ištaisyti arba ištrinti</span>
+            </li>
+            <li class="flex items-start gap-3">
+                <svg class="w-4 h-4 text-success-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Apriboti jų tvarkymą</span>
+            </li>
+        </ul>
+    </section>
+
+    <section class="mb-10">
+        <h2 class="text-lg font-semibold text-ink mb-3 tracking-tight">Techninės saugumo priemonės</h2>
+        <ul class="space-y-2 text-sm text-ink-secondary">
+            <li class="flex items-start gap-3">
+                <svg class="w-4 h-4 text-brand-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Sesijos slapukai apsaugoti HttpOnly ir SameSite atributais</span>
+            </li>
+            <li class="flex items-start gap-3">
+                <svg class="w-4 h-4 text-brand-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Visi duomenys validuojami serveryje</span>
+            </li>
+            <li class="flex items-start gap-3">
+                <svg class="w-4 h-4 text-brand-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Apsauga nuo CSRF, XSS ir SQL injekcijų</span>
+            </li>
+            <li class="flex items-start gap-3">
+                <svg class="w-4 h-4 text-brand-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Užklausų ribojimas prieš piktnaudžiavimą</span>
+            </li>
+        </ul>
+    </section>
+
+    <div class="pt-6 border-t border-line">
+        <a href="{{ url_for('main.index') }}" class="inline-flex items-center gap-1.5 text-sm font-medium text-ink-secondary hover:text-ink transition-colors">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"/>
+                <polyline points="12 19 5 12 12 5"/>
+            </svg>
+            Grįžti į pradžią
+        </a>
+    </div>
+</div>
+{% endblock %}

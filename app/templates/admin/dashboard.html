@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Administravimo skydelis{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-6 pt-10 pb-12">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+        <div>
+            <p class="text-xs font-semibold text-brand-600 uppercase tracking-wider mb-2">Administravimas</p>
+            <h1 class="text-3xl font-semibold text-ink tracking-tight">Sistemos skydelis</h1>
+        </div>
+        <form method="POST" action="{{ url_for('admin.logout') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="text-sm font-medium text-ink-secondary hover:text-ink">Atsijungti</button>
+        </form>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+        <div class="bg-surface border border-line rounded-xl p-5">
+            <p class="text-xs uppercase tracking-wider text-ink-muted mb-2">Klausimai</p>
+            <p class="text-3xl font-semibold text-ink">{{ stats.questions }}</p>
+        </div>
+        <div class="bg-surface border border-line rounded-xl p-5">
+            <p class="text-xs uppercase tracking-wider text-ink-muted mb-2">Rekomendacijos</p>
+            <p class="text-3xl font-semibold text-ink">{{ stats.recommendations }}</p>
+        </div>
+        <div class="bg-surface border border-line rounded-xl p-5">
+            <p class="text-xs uppercase tracking-wider text-ink-muted mb-2">Sesijos</p>
+            <p class="text-3xl font-semibold text-ink">{{ stats.sessions }}</p>
+        </div>
+        <div class="bg-surface border border-line rounded-xl p-5">
+            <p class="text-xs uppercase tracking-wider text-ink-muted mb-2">Užbaigimas</p>
+            <p class="text-3xl font-semibold text-ink">{{ stats.completion_rate }}%</p>
+        </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4 mb-8">
+        <a href="{{ url_for('admin.questions') }}" class="bg-ink text-white rounded-xl p-6 hover:bg-ink-secondary transition-colors">
+            <p class="text-xs uppercase tracking-wider text-ink-faint mb-2">CRUD</p>
+            <h2 class="text-xl font-semibold mb-2">Tvarkyti klausimus</h2>
+            <p class="text-sm text-stone-300">Kurti, redaguoti ir šalinti klausimus bei jų atsakymus.</p>
+        </a>
+        <a href="{{ url_for('admin.recommendations') }}" class="bg-brand-700 text-white rounded-xl p-6 hover:bg-brand-900 transition-colors">
+            <p class="text-xs uppercase tracking-wider text-brand-100 mb-2">CRUD</p>
+            <h2 class="text-xl font-semibold mb-2">Tvarkyti rekomendacijas</h2>
+            <p class="text-sm text-brand-100">Filtruoti ir keisti vartotojui generuojamus veiksmus.</p>
+        </a>
+    </div>
+
+    <div class="bg-surface border border-line rounded-xl overflow-hidden mb-6">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-line">
+            <div>
+                <h2 class="font-semibold text-ink">Sesijų ataskaita</h2>
+                <p class="text-sm text-ink-secondary">Anoniminė naudojimo statistika pagal platformą.</p>
+            </div>
+            <a href="{{ url_for('admin.report_csv') }}" class="text-sm font-medium text-brand-700 hover:text-brand-900">Atsisiųsti CSV</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-canvas text-left text-ink-muted">
+                    <tr>
+                        <th class="px-5 py-3 font-medium">Platforma</th>
+                        <th class="px-5 py-3 font-medium">Sesijos</th>
+                        <th class="px-5 py-3 font-medium">Užbaigtos</th>
+                        <th class="px-5 py-3 font-medium">Užbaigimas</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-line">
+                    {% for row in report %}
+                    <tr>
+                        <td class="px-5 py-3 font-medium text-ink">{{ row.name }}</td>
+                        <td class="px-5 py-3 text-ink-secondary">{{ row.sessions }}</td>
+                        <td class="px-5 py-3 text-ink-secondary">{{ row.completed }}</td>
+                        <td class="px-5 py-3 text-ink-secondary">{{ row.completion_rate }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

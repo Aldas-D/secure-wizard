@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Administratoriaus prisijungimas{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto px-6 pt-16 pb-12">
+    <div class="mb-8">
+        <p class="text-xs font-semibold text-brand-600 uppercase tracking-wider mb-3">Administravimas</p>
+        <h1 class="text-3xl font-semibold text-ink tracking-tight mb-2">Prisijungimas</h1>
+        <p class="text-sm text-ink-secondary">Klausimams, rekomendacijoms ir ataskaitoms tvarkyti.</p>
+    </div>
+
+    <form method="POST" class="bg-surface border border-line rounded-xl p-6 shadow-soft space-y-5">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div>
+            <label for="username" class="block text-sm font-medium text-ink mb-2">Naudotojo vardas</label>
+            <input id="username" name="username" required autocomplete="username"
+                   class="w-full rounded-lg border border-line px-3 py-2.5 text-sm focus:border-brand-600 focus:outline-none">
+        </div>
+        <div>
+            <label for="password" class="block text-sm font-medium text-ink mb-2">Slaptažodis</label>
+            <input id="password" name="password" type="password" required autocomplete="current-password"
+                   class="w-full rounded-lg border border-line px-3 py-2.5 text-sm focus:border-brand-600 focus:outline-none">
+        </div>
+        <button class="w-full px-5 py-2.5 bg-ink hover:bg-ink-secondary text-white text-sm font-medium rounded-lg transition-colors">
+            Prisijungti
+        </button>
+    </form>
+</div>
+{% endblock %}

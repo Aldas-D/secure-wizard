@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  input[type="radio"],
+  input[type="checkbox"] {
+    accent-color: #4F46E5;
+  }
+}
+
+@layer utilities {
+  .grid-pattern {
+    background-image:
+      linear-gradient(rgba(28, 25, 23, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(28, 25, 23, 0.025) 1px, transparent 1px);
+    background-position: -1px -1px;
+    background-size: 48px 48px;
+  }
+}

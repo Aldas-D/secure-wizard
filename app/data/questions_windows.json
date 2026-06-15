@@ -1,0 +1,127 @@
+{
+  "platform": {
+    "code": "WIN",
+    "name": "Windows",
+    "description": "Stalinis kompiuteris arba nešiojamas su Windows 10/11"
+  },
+  "questions": [
+    {
+      "order": 1,
+      "text": "Ar jūsų Windows yra atnaujintas iki naujausios versijos?",
+      "type": "single",
+      "risk_areas": ["UPD"],
+      "answers": [
+        {"text": "Taip, atnaujinau per pastarąsias 2 savaites", "weight": 0},
+        {"text": "Atnaujinu retkarčiais, kai prisimenu", "weight": 5},
+        {"text": "Nežinau, ar atnaujintas", "weight": 7},
+        {"text": "Neatnaujinu, kad neprasidėtų automatiniai atnaujinimai", "weight": 10}
+      ]
+    },
+    {
+      "order": 2,
+      "text": "Kokią antivirusinę programą naudojate?",
+      "type": "single",
+      "risk_areas": ["APP"],
+      "answers": [
+        {"text": "Windows Defender (numatytasis) arba kitas patikimas antivirusas", "weight": 1},
+        {"text": "Mokamas antivirusas (Bitdefender, Kaspersky ir kt.)", "weight": 0},
+        {"text": "Nemokamas iš nepatikimo šaltinio", "weight": 7},
+        {"text": "Jokios antivirusinės nenaudoju", "weight": 9}
+      ]
+    },
+    {
+      "order": 3,
+      "text": "Ar User Account Control (UAC) yra įjungtas?",
+      "type": "single",
+      "risk_areas": ["ACC"],
+      "answers": [
+        {"text": "Taip, įjungtas", "weight": 0},
+        {"text": "Nežinau, kas tai", "weight": 5},
+        {"text": "Išjungiau, nes erzina pranešimai", "weight": 9}
+      ]
+    },
+    {
+      "order": 4,
+      "text": "Kaip elgiatės su slaptažodžiais?",
+      "type": "single",
+      "risk_areas": ["PWD"],
+      "answers": [
+        {"text": "Naudoju slaptažodžių tvarkyklę, unikalūs slaptažodžiai kiekvienai paskyrai", "weight": 0},
+        {"text": "Skirtingi, bet užsirašau sąsiuvinyje", "weight": 3},
+        {"text": "Pora skirtingų slaptažodžių, naudoju kelioms paskyroms", "weight": 7},
+        {"text": "Tas pats slaptažodis beveik visur", "weight": 10}
+      ]
+    },
+    {
+      "order": 5,
+      "text": "Ar svarbioms paskyroms naudojate dviejų veiksnių autentifikaciją (2FA)?",
+      "type": "single",
+      "risk_areas": ["ACC", "PWD"],
+      "answers": [
+        {"text": "Taip, visoms svarbioms paskyroms", "weight": 0},
+        {"text": "Tik el. paštui arba bankui", "weight": 3},
+        {"text": "Nenaudoju, nes komplikuota", "weight": 8},
+        {"text": "Nežinau, kas tai", "weight": 7}
+      ]
+    },
+    {
+      "order": 6,
+      "text": "Iš kur dažniausiai parsisiunčiate programas?",
+      "type": "single",
+      "risk_areas": ["APP"],
+      "answers": [
+        {"text": "Tik iš oficialių svetainių arba Microsoft Store", "weight": 0},
+        {"text": "Iš Google paieškos pirmų rezultatų", "weight": 5},
+        {"text": "Iš torrent svetainių arba „cracked“ versijų", "weight": 10},
+        {"text": "Iš to, kas atsiunčiama el. paštu", "weight": 9}
+      ]
+    },
+    {
+      "order": 7,
+      "text": "Kaip dažnai darote atsargines kopijas (backup)?",
+      "type": "single",
+      "risk_areas": ["UPD"],
+      "answers": [
+        {"text": "Automatiškai į debesį arba išorinį diską", "weight": 0},
+        {"text": "Kartą per mėnesį rankiniu būdu", "weight": 3},
+        {"text": "Retkarčiais, kai prisimenu", "weight": 6},
+        {"text": "Niekada", "weight": 9}
+      ]
+    },
+    {
+      "order": 8,
+      "text": "Ar naudojate VPN, kai jungiatės prie viešų Wi-Fi tinklų?",
+      "type": "single",
+      "risk_areas": ["NET"],
+      "answers": [
+        {"text": "Taip, visada", "weight": 0},
+        {"text": "Tik svarbiems veiksmams (bankas, paštas)", "weight": 2},
+        {"text": "Nenaudoju, jungiuosi prie viešų Wi-Fi be apsaugos", "weight": 8},
+        {"text": "Nesijungiu prie viešų Wi-Fi", "weight": 1}
+      ]
+    },
+    {
+      "order": 9,
+      "text": "Ką darote su nežinomo siuntėjo el. laiškais su priedais?",
+      "type": "single",
+      "risk_areas": ["APP", "ACC"],
+      "answers": [
+        {"text": "Iš karto ištrinu, neatidaru", "weight": 0},
+        {"text": "Atidaru priedą, jei tekstas atrodo įdomus", "weight": 9},
+        {"text": "Patikrinu siuntėją, paskui sprendžiu", "weight": 3},
+        {"text": "Visada atidaru, kad sužinočiau, kas siunčia", "weight": 10}
+      ]
+    },
+    {
+      "order": 10,
+      "text": "Ar jūsų kompiuteris turi prisijungimo slaptažodį?",
+      "type": "single",
+      "risk_areas": ["ACC"],
+      "answers": [
+        {"text": "Taip, stiprus slaptažodis arba PIN", "weight": 0},
+        {"text": "Taip, paprastas slaptažodis (pvz. 1234)", "weight": 6},
+        {"text": "Ne, kompiuteris atsiranda iš karto įjungus", "weight": 8}
+      ]
+    }
+  ]
+}

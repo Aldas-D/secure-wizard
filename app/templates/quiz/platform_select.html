@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Pasirinkite įrenginį{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-6 pt-16 pb-12">
+
+    <div class="mb-10 animate-fade-up">
+        <p class="text-xs font-semibold text-brand-600 uppercase tracking-wider mb-3">1 žingsnis iš 3</p>
+        <h1 class="text-3xl sm:text-4xl font-semibold text-ink tracking-tight mb-2">
+            Kurį įrenginį tikrinsime?
+        </h1>
+        <p class="text-ink-secondary">Pasirinkite tą, kuriuo dažniausiai naudojatės.</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('quiz.start') }}" class="space-y-3">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        {% for platform in platforms %}
+            <button type="submit" name="platform" value="{{ platform.code }}"
+                    class="group w-full bg-surface border border-line hover:border-ink rounded-xl p-5 text-left transition-all hover:shadow-soft animate-fade-up flex items-center gap-5"
+                    style="animation-delay: {{ loop.index0 * 60 + 60 }}ms; animation-fill-mode: both;">
+
+                <div class="flex-shrink-0 w-12 h-12 bg-canvas border border-line rounded-lg flex items-center justify-center group-hover:bg-brand-50 group-hover:border-brand-500/30 transition-colors">
+                    {% if platform.code == 'WIN' %}
+                        <svg class="w-5 h-5 text-ink-secondary group-hover:text-brand-600 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                    {% else %}
+                        <svg class="w-5 h-5 text-ink-secondary group-hover:text-brand-600 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                            <line x1="12" y1="18" x2="12.01" y2="18"/>
+                        </svg>
+                    {% endif %}
+                </div>
+
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-ink mb-0.5">{{ platform.name }}</h3>
+                    {% if platform.description %}
+                        <p class="text-sm text-ink-secondary leading-snug">{{ platform.description }}</p>
+                    {% endif %}
+                </div>
+
+                <svg class="w-4 h-4 text-ink-faint group-hover:text-ink transition-colors flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"/>
+                </svg>
+            </button>
+        {% endfor %}
+    </form>
+
+    <div class="mt-8 bg-surface border border-line rounded-lg p-4 flex items-start gap-3 animate-fade-up" style="animation-delay: 240ms; animation-fill-mode: both;">
+        <svg class="w-4 h-4 text-ink-muted flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        <div class="text-sm text-ink-secondary leading-relaxed">
+            Atsakymai niekur neperduodami. Neprašome prisijungti. Praėjus 60 minučių, visi duomenys ištrinami automatiškai.
+        </div>
+    </div>
+</div>
+{% endblock %}

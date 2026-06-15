@@ -1,0 +1,25 @@
+services:
+  web:
+    build: .
+    container_name: secure-wizard
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - sqlite_data:/app/instance
+    environment:
+      - FLASK_ENV=development
+      - SECRET_KEY=${SECRET_KEY:-development-only-change-before-deploy}
+      - DATABASE_URL=sqlite:////app/instance/app.db
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH:-}
+      - LOG_LEVEL=INFO
+      - LOG_FORMAT=json
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  sqlite_data:

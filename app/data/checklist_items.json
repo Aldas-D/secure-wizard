@@ -1,0 +1,134 @@
+{
+  "WIN": [
+    {
+      "title": "Pakeiskite slaptažodžius",
+      "description": "Pradėkite nuo el. pašto ir banko paskyrų. Naudokite slaptažodžių tvarkyklę (pvz. Bitwarden, KeePassXC) kiekvienai paskyrai unikaliam slaptažodžiui sukurti. Slaptažodis turi būti bent 12 simbolių, su raidėmis, skaičiais ir simboliais.",
+      "priority": 1,
+      "risk_area": "PWD",
+      "when_specialist": "Jei įtariate, kad jūsų paskyra jau pasiekta, skubiai pakeiskite slaptažodžius iš švaraus įrenginio.",
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Įjunkite dviejų veiksnių autentifikaciją (2FA)",
+      "description": "Eikite į savo paskyros saugumo nustatymus ir įjunkite 2FA. Geriausia naudoti autentifikatoriaus programą (Google Authenticator, Authy) vietoje SMS, nes SMS galima perimti.",
+      "priority": 1,
+      "risk_area": "ACC",
+      "when_specialist": null,
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Įjunkite Windows Update",
+      "description": "Spauskite Start, įveskite „Windows Update“, atidarykite nustatymus ir paspauskite „Check for updates“. Įjunkite automatinius atnaujinimus, kad ateityje nebereikėtų prisiminti.",
+      "priority": 2,
+      "risk_area": "UPD",
+      "when_specialist": null,
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Įjunkite User Account Control (UAC)",
+      "description": "Spauskite Start, įveskite „UAC“, pasirinkite „Change User Account Control settings“. Nustatykite slankiklį į „Notify me only when apps try to make changes“ arba aukščiau.",
+      "priority": 2,
+      "risk_area": "ACC",
+      "when_specialist": null,
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Patikrinkite įdiegtas programas",
+      "description": "Atidarykite Settings → Apps → Installed apps. Pašalinkite programas, kurių neatpažįstate arba nenaudojate. Ypatingą dėmesį skirkite programoms, kurios buvo įdiegtos neseniai.",
+      "priority": 3,
+      "risk_area": "APP",
+      "when_specialist": "Jei matote įtartinas programas, kurių nepavyksta pašalinti, kreipkitės į IT specialistą.",
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Paleiskite pilną antivirusinę patikrą",
+      "description": "Atidarykite Windows Security → Virus & threat protection → Scan options → Full scan. Patikra gali užtrukti kelias valandas, bet patikrins visus failus.",
+      "priority": 2,
+      "risk_area": "APP",
+      "when_specialist": "Jei antivirusinė randa kenkėjišką programą ir negali jos pašalinti, kreipkitės į specialistą.",
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Sukonfigūruokite atsargines kopijas",
+      "description": "Naudokite OneDrive, Google Drive arba išorinį diską. Settings → Update & Security → Backup. Idealiu atveju, taikykite 3-2-1 taisyklę: 3 kopijos, 2 skirtingos laikmenos, 1 ne vietoje.",
+      "priority": 3,
+      "risk_area": "UPD",
+      "when_specialist": null,
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Įjunkite stiprų ekrano užrakto slaptažodį",
+      "description": "Settings → Accounts → Sign-in options. Pasirinkite Windows Hello PIN (bent 6 simboliai) arba biometrinį prisijungimą, jei įrenginys palaiko.",
+      "priority": 2,
+      "risk_area": "ACC",
+      "when_specialist": null,
+      "trigger_answer_ids": []
+    }
+  ],
+  "AND": [
+    {
+      "title": "Atnaujinkite Android sistemą",
+      "description": "Settings → System → System update. Jei jūsų įrenginys daugiau negauna atnaujinimų, apsvarstykite galimybę įsigyti naujesnį telefoną, ypač jei naudojate banko ar darbo programas.",
+      "priority": 1,
+      "risk_area": "UPD",
+      "when_specialist": null,
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Pašalinkite įtartinas programėles",
+      "description": "Settings → Apps. Peržiūrėkite visas įdiegtas programėles. Pašalinkite tas, kurių nepažįstate, ypač jei jos buvo įdiegtos ne iš Google Play.",
+      "priority": 1,
+      "risk_area": "APP",
+      "when_specialist": "Jei programėlės negalite pašalinti, jūsų telefone gali būti reklamų virusas. Kreipkitės į specialistą arba atlikite factory reset.",
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Patikrinkite programėlių leidimus",
+      "description": "Settings → Privacy → Permission manager. Peržiūrėkite, kurios programėlės turi prieigą prie kamerai, mikrofonui, vietai, kontaktams. Panaikinkite leidimus, kurie atrodo nepagrįsti.",
+      "priority": 2,
+      "risk_area": "APP",
+      "when_specialist": null,
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Įjunkite ekrano užraktą",
+      "description": "Settings → Security → Screen lock. Nustatykite PIN (bent 6 skaičiai), slaptažodį arba pirštų atspaudus. Slankymo užraktas nėra apsauga.",
+      "priority": 1,
+      "risk_area": "ACC",
+      "when_specialist": null,
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Įjunkite Google paskyros 2FA",
+      "description": "myaccount.google.com → Security → 2-Step Verification. Geriausia naudoti Google Authenticator arba security key. Šitas vienas veiksmas apsaugo nuo daugumos paskyros vagystės atvejų.",
+      "priority": 1,
+      "risk_area": "ACC",
+      "when_specialist": null,
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Naudokite VPN viešuose Wi-Fi tinkluose",
+      "description": "Įdiekite patikimą VPN programėlę (pvz. Mullvad, ProtonVPN). Visada įjunkite VPN prieš jungdamiesi prie kavinės, oro uosto ar viešbučio Wi-Fi.",
+      "priority": 3,
+      "risk_area": "NET",
+      "when_specialist": null,
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Įjunkite Google Play Protect",
+      "description": "Atidarykite Google Play Store → paskyros piktograma → Play Protect. Įjunkite skenavimą ir patikrinkite, ar nėra grėsmių. Play Protect tikrina programėles realiu laiku.",
+      "priority": 2,
+      "risk_area": "APP",
+      "when_specialist": null,
+      "trigger_answer_ids": []
+    },
+    {
+      "title": "Atlikite factory reset, jei stebite įtartiną elgesį",
+      "description": "Jei telefonas elgiasi keistai (greitai senka baterija, atsiranda reklamos, šyla be priežasties), apsvarstykite factory reset. Pirmiausia padarykite svarbių duomenų kopiją.",
+      "priority": 1,
+      "risk_area": "APP",
+      "when_specialist": "Jei po factory reset problemos kartojasi, gali būti pažeistas firmware. Tai jau specialisto darbas.",
+      "trigger_answer_ids": []
+    }
+  ]
+}

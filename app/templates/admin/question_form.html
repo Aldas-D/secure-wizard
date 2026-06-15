@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}{% if question %}Redaguoti klausimą{% else %}Naujas klausimas{% endif %}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-6 pt-10 pb-12">
+    <a href="{{ url_for('admin.questions') }}" class="text-sm text-ink-muted hover:text-ink">Grįžti į klausimus</a>
+    <h1 class="text-3xl font-semibold text-ink tracking-tight mt-2 mb-7">{% if question %}Redaguoti klausimą{% else %}Naujas klausimas{% endif %}</h1>
+
+    <form method="POST" class="bg-surface border border-line rounded-xl p-6 space-y-5">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        {% if not question %}
+        <div>
+            <label class="block text-sm font-medium text-ink mb-2">Platforma</label>
+            <select name="platform" required class="w-full rounded-lg border border-line px-3 py-2.5 text-sm bg-white">
+                {% for platform in platforms %}<option value="{{ platform.code }}">{{ platform.name }}</option>{% endfor %}
+            </select>
+        </div>
+        {% else %}
+        <p class="text-sm text-ink-secondary">{{ question.platform.name }} · {{ question.order_num }} klausimas</p>
+        {% endif %}
+
+        <div>
+            <label class="block text-sm font-medium text-ink mb-2">Klausimo tekstas</label>
+            <textarea name="text" rows="3" required class="w-full rounded-lg border border-line px-3 py-2.5 text-sm">{{ question.text if question else '' }}</textarea>
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-ink mb-2">Tipas</label>
+            <select name="q_type" class="w-full rounded-lg border border-line px-3 py-2.5 text-sm bg-white">
+                <option value="single" {% if not question or question.q_type == 'single' %}selected{% endif %}>Vienas atsakymas</option>
+                <option value="multiple" {% if question and question.q_type == 'multiple' %}selected{% endif %}>Keli atsakymai</option>
+            </select>
+        </div>
+        <fieldset>
+            <legend class="block text-sm font-medium text-ink mb-2">Rizikos sritys</legend>
+            <div class="grid sm:grid-cols-2 gap-2">
+                {% for code, label in risk_areas.items() %}
+                <label class="flex items-center gap-2 border border-line rounded-lg px-3 py-2 text-sm">
+                    <input type="checkbox" name="risk_areas" value="{{ code }}" {% if question and code in question.risk_areas %}checked{% endif %}>
+                    {{ label }}
+                </label>
+                {% endfor %}
+            </div>
+        </fieldset>
+        <button class="px-5 py-2.5 bg-ink text-white text-sm font-medium rounded-lg">Išsaugoti</button>
+    </form>
+
+    {% if question %}
+    <section class="mt-8">
+        <h2 class="text-xl font-semibold text-ink mb-4">Atsakymų variantai</h2>
+        <div class="space-y-3">
+            {% for answer in question.answers %}
+            <form method="POST" action="{{ url_for('admin.answer_edit', answer_id=answer.id) }}" class="bg-surface border border-line rounded-xl p-4 grid sm:grid-cols-[1fr_100px_auto] gap-3 items-end">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div>
+                    <label class="block text-xs font-medium text-ink-muted mb-1">Tekstas</label>
+                    <input name="answer_text" value="{{ answer.text }}" required class="w-full rounded-lg border border-line px-3 py-2 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-ink-muted mb-1">Rizika 0-10</label>
+                    <input name="risk_weight" type="number" min="0" max="10" value="{{ answer.risk_weight }}" required class="w-full rounded-lg border border-line px-3 py-2 text-sm">
+                </div>
+                <div class="flex gap-2">
+                    <button class="px-3 py-2 bg-ink text-white rounded-lg text-sm">Saugoti</button>
+                    <button formaction="{{ url_for('admin.answer_delete', answer_id=answer.id) }}" class="px-3 py-2 text-danger-600 text-sm">Šalinti</button>
+                </div>
+            </form>
+            {% endfor %}
+        </div>
+
+        <form method="POST" action="{{ url_for('admin.answer_new', question_id=question.id) }}" class="mt-4 bg-brand-50 border border-brand-100 rounded-xl p-4 grid sm:grid-cols-[1fr_100px_auto] gap-3 items-end">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div>
+                <label class="block text-xs font-medium text-ink-muted mb-1">Naujas atsakymas</label>
+                <input name="answer_text" required class="w-full rounded-lg border border-line px-3 py-2 text-sm">
+            </div>
+            <div>
+                <label class="block text-xs font-medium text-ink-muted mb-1">Rizika 0-10</label>
+                <input name="risk_weight" type="number" min="0" max="10" value="0" required class="w-full rounded-lg border border-line px-3 py-2 text-sm">
+            </div>
+            <button class="px-3 py-2 bg-brand-700 text-white rounded-lg text-sm">Pridėti</button>
+        </form>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}

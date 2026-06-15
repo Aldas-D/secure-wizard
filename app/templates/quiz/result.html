@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block title %}Jūsų patikros planas{% endblock %}
+
+{% set area_names = {
+    "PWD": "Slaptažodžiai",
+    "UPD": "Atnaujinimai",
+    "APP": "Programėlės",
+    "NET": "Tinklas",
+    "ACC": "Paskyros"
+} %}
+
+{% set level_meta = {
+    "LOW":      {"label": "Žemas", "subtitle": "Jūsų saugumas yra geras", "tone": "success", "msg": "Toliau laikykitės gerų įpročių. Pridėjome ir keletą papildomų patarimų, kurie padės dar labiau apsisaugoti."},
+    "MEDIUM":   {"label": "Vidutinis", "subtitle": "Verta keletą dalykų pakeisti", "tone": "warning", "msg": "Atlikus žemiau pateiktus žingsnius, jūsų įrenginio apsauga reikšmingai sustiprės."},
+    "HIGH":     {"label": "Aukštas", "subtitle": "Jūsų įrenginys turi spragų", "tone": "danger", "msg": "Yra keletas rimtų dalykų, kuriuos verta sutvarkyti per artimiausias dienas. Pradėkite nuo pirmojo sąraše."},
+    "CRITICAL": {"label": "Kritinis", "subtitle": "Įrenginys didelėje rizikoje", "tone": "danger", "msg": "Rekomenduojame imtis veiksmų dar šiandien. Pirmasis sąraše punktas užtruks vos kelias minutes."}
+} %}
+
+{% set meta = level_meta[plan.profile.level.value] %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-6 pt-10 pb-12">
+
+    <div class="mb-2">
+        <p class="text-xs font-semibold text-brand-600 uppercase tracking-wider mb-2">Patikros rezultatai</p>
+        <h1 class="text-3xl sm:text-4xl font-semibold text-ink tracking-tight">
+            Jūsų patikros planas
+        </h1>
+    </div>
+
+    <div class="bg-surface border border-line rounded-xl p-6 sm:p-8 mt-6 shadow-soft animate-fade-up">
+        <div class="flex items-start gap-4 mb-6 pb-6 border-b border-line">
+            <div class="flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center
+                {% if meta.tone == 'success' %}bg-success-50
+                {% elif meta.tone == 'warning' %}bg-warning-50
+                {% else %}bg-danger-50{% endif %}">
+                {% if meta.tone == 'success' %}
+                    <svg class="w-5 h-5 text-success-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                {% elif meta.tone == 'warning' %}
+                    <svg class="w-5 h-5 text-warning-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                {% else %}
+                    <svg class="w-5 h-5 text-danger-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                {% endif %}
+            </div>
+            <div class="flex-1">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xs font-semibold uppercase tracking-wider
+                        {% if meta.tone == 'success' %}text-success-600
+                        {% elif meta.tone == 'warning' %}text-warning-600
+                        {% else %}text-danger-600{% endif %}">
+                        {{ meta.label }} rizikos lygis
+                    </span>
+                </div>
+                <h2 class="text-xl font-semibold text-ink tracking-tight">{{ meta.subtitle }}</h2>
+                <p class="text-sm text-ink-secondary mt-2 leading-relaxed">{{ meta.msg }}</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-px bg-line rounded-lg overflow-hidden border border-line">
+            <div class="bg-surface px-5 py-4">
+                <div class="text-xs font-medium text-ink-muted uppercase tracking-wider mb-1">Rizikos balas</div>
+                <div class="text-2xl font-semibold text-ink tabular-nums">{{ plan.profile.percentage }}<span class="text-base text-ink-muted">%</span></div>
+            </div>
+            <div class="bg-surface px-5 py-4">
+                <div class="text-xs font-medium text-ink-muted uppercase tracking-wider mb-1">Rekomendacijos</div>
+                <div class="text-2xl font-semibold text-ink tabular-nums">{{ plan.items|length }}</div>
+            </div>
+        </div>
+    </div>
+
+    {% if plan.profile.areas %}
+        <div class="bg-surface border border-line rounded-xl p-6 sm:p-8 mt-4 animate-fade-up" style="animation-delay: 80ms; animation-fill-mode: both;">
+            <h2 class="text-base font-semibold text-ink mb-1">Rezultatai pagal sritis</h2>
+            <p class="text-sm text-ink-secondary mb-6">Kaip atrodo jūsų saugumas kiekvienoje srityje atskirai.</p>
+
+            <div class="space-y-4">
+                {% for area, score in plan.profile.areas.items() %}
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <span class="text-sm font-medium text-ink">{{ area_names.get(area, area) }}</span>
+                            <span class="text-xs font-medium tabular-nums
+                                {% if score >= 7.5 %}text-danger-600
+                                {% elif score >= 5 %}text-danger-500
+                                {% elif score >= 2.5 %}text-warning-600
+                                {% else %}text-success-600{% endif %}">
+                                {% if score >= 7.5 %}Reikia dėmesio
+                                {% elif score >= 5 %}Verta peržiūrėti
+                                {% elif score >= 2.5 %}Beveik gerai
+                                {% else %}Gerai{% endif %}
+                            </span>
+                        </div>
+                        <div class="w-full bg-canvas border border-line rounded-full h-1.5 overflow-hidden">
+                            <div class="h-full transition-all duration-700
+                                {% if score >= 7.5 %}bg-danger-500
+                                {% elif score >= 5 %}bg-danger-500/70
+                                {% elif score >= 2.5 %}bg-warning-500
+                                {% else %}bg-success-500{% endif %}"
+                                style="width: {{ (score / 10 * 100) | round }}%"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="mt-10 mb-5">
+        <h2 class="text-xl font-semibold text-ink tracking-tight">Rekomenduojami žingsniai</h2>
+        <p class="text-sm text-ink-secondary mt-1">Pritaikyti pagal jūsų atsakymus, sutvarkyti pagal svarbą.</p>
+    </div>
+
+    {% if plan.items %}
+        <div class="space-y-3">
+            {% for item in plan.items %}
+                <div class="bg-surface border border-line rounded-xl p-5 sm:p-6 hover:shadow-soft transition-shadow animate-fade-up"
+                     style="animation-delay: {{ 100 + loop.index0 * 40 }}ms; animation-fill-mode: both;">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-7 h-7 rounded-md flex items-center justify-center font-semibold text-xs tabular-nums
+                            {% if item.priority == 1 %}bg-danger-50 text-danger-600
+                            {% elif item.priority == 2 %}bg-warning-50 text-warning-600
+                            {% else %}bg-brand-50 text-brand-600{% endif %}">
+                            {{ loop.index }}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-start justify-between gap-3 mb-2 flex-wrap">
+                                <h3 class="font-semibold text-ink leading-snug">{{ item.title }}</h3>
+                                <span class="flex-shrink-0 text-xs font-medium px-2 py-0.5 rounded-md bg-canvas border border-line text-ink-muted">
+                                    {{ area_names.get(item.risk_area, item.risk_area) }}
+                                </span>
+                            </div>
+                            <p class="text-sm text-ink-secondary leading-relaxed">{{ item.description }}</p>
+                            {% if item.when_specialist %}
+                                <div class="mt-3 p-3 bg-warning-50 border border-warning-500/30 rounded-lg text-sm">
+                                    <p class="font-semibold text-warning-600 mb-0.5 text-xs uppercase tracking-wider">Kada kreiptis į specialistą</p>
+                                    <p class="text-ink-secondary leading-relaxed">{{ item.when_specialist }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="bg-success-50 border border-success-500/30 rounded-xl p-8 text-center">
+            <svg class="w-8 h-8 text-success-600 mx-auto mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <p class="font-semibold text-ink mb-1">Šaunu</p>
+            <p class="text-sm text-ink-secondary">Toliau elkitės taip pat. Patikrą rekomenduojame pakartoti po kelių mėnesių.</p>
+        </div>
+    {% endif %}
+
+    <div class="mt-10 flex flex-col sm:flex-row gap-3 print:hidden">
+        <button type="button" data-print-page
+                class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-surface border border-line hover:border-ink-secondary text-ink text-sm font-medium rounded-lg transition-colors">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 6 2 18 2 18 9"/>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+            Atsispausdinti
+        </button>
+        <a href="{{ url_for('quiz.start') }}"
+           class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-ink hover:bg-ink-secondary text-white text-sm font-medium rounded-lg shadow-soft transition-colors">
+            Atlikti naują patikrą
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+            </svg>
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+  schedule:
+    # Savaitinė priklausomybių patikra.
+    - cron: "0 6 * * 1"
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Ruff (formatas + saugumas via S rules)
+        run: ruff check app/ tests/ scripts/
+
+      - name: Run tests
+        env:
+          FLASK_ENV: testing
+        run: pytest -v --cov=app --cov-report=term-missing --cov-fail-under=70
+
+  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install pip-audit ir bandit
+        run: |
+          python -m pip install --upgrade pip
+          pip install pip-audit bandit[toml]
+
+      - name: pip-audit (žinomi CVE priklausomybėse)
+        run: pip-audit -r requirements.txt --strict
+
+      - name: Bandit (statinė analizė)
+        run: bandit -r app/ -ll -ii
+
+  docker-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t secure-wizard:ci .
+
+      - name: Trivy scan (OS + libs CVE)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: secure-wizard:ci
+          format: table
+          severity: HIGH,CRITICAL
+          exit-code: 1
+          ignore-unfixed: true

@@ -1,0 +1,85 @@
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--save", "", "--appendonly", "no", "--maxmemory", "128mb", "--maxmemory-policy", "allkeys-lru"]
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /data
+
+  web:
+    build: .
+    restart: unless-stopped
+    expose:
+      - "8000"
+    volumes:
+      - sqlite_data:/app/instance
+    environment:
+      - FLASK_ENV=production
+      - SECRET_KEY=${SECRET_KEY:?ATSISAKYTA: SECRET_KEY privalo būti nustatytas .env faile}
+      - DATABASE_URL=sqlite:////app/instance/app.db
+      - RATELIMIT_STORAGE_URI=redis://redis:6379/0
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH:?ATSISAKYTA: ADMIN_PASSWORD_HASH privalo būti nustatytas .env faile}
+      - GUNICORN_WORKERS=${GUNICORN_WORKERS:-2}
+      - LOG_LEVEL=INFO
+      - LOG_FORMAT=json
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    # Saugumo hardening: konteineris negali įgyti privilegijų ir negali rašyti į root FS
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    # read_only NEįjungtas — Flask app rašo į /app/instance (SQLite WAL failai).
+    # Volume tą katalogą jau dengia.
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./app/static:/app/static:ro
+    depends_on:
+      - web
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      # Reikalingas tik bind'inti į 80/443 portus
+      - NET_BIND_SERVICE
+
+  cleanup:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - sqlite_data:/app/instance
+    environment:
+      - FLASK_ENV=production
+      - SECRET_KEY=${SECRET_KEY:?ATSISAKYTA: SECRET_KEY privalo būti nustatytas .env faile}
+      - DATABASE_URL=sqlite:////app/instance/app.db
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH:?ATSISAKYTA: ADMIN_PASSWORD_HASH privalo būti nustatytas .env faile}
+    entrypoint: ["python", "-m", "scripts.cleanup_sessions"]
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+volumes:
+  sqlite_data:
