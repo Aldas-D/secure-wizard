@@ -7,12 +7,21 @@ from pathlib import Path
 _DEV_SECRET = "dev-only-change-in-production"  # noqa: S105
 
 
+def _database_url() -> str:
+    url = os.environ.get(
+        "DATABASE_URL", "sqlite:///" + str(Path(__file__).parent.parent / "instance" / "app.db")
+    )
+    if url.startswith("postgres://"):
+        return url.replace("postgres://", "postgresql+psycopg://", 1)
+    if url.startswith("postgresql://"):
+        return url.replace("postgresql://", "postgresql+psycopg://", 1)
+    return url
+
+
 class BaseConfig:
     SECRET_KEY = os.environ.get("SECRET_KEY", _DEV_SECRET)
 
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URL", "sqlite:///" + str(Path(__file__).parent.parent / "instance" / "app.db")
-    )
+    SQLALCHEMY_DATABASE_URI = _database_url()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_pre_ping": True,

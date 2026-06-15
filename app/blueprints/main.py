@@ -2,6 +2,8 @@
 
 from flask import Blueprint, jsonify, render_template
 
+from app.extensions import talisman
+
 bp = Blueprint("main", __name__)
 
 
@@ -16,5 +18,6 @@ def privacy():
 
 
 @bp.route("/healthz")
+@talisman(force_https=False, content_security_policy=None)
 def healthz():
     return jsonify({"status": "ok"}), 200

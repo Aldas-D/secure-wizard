@@ -5,6 +5,7 @@ Flask-Migrate==4.0.7
 Flask-WTF==1.2.2
 Flask-Limiter==3.10.1
 Flask-Talisman==1.1.0
+redis==7.4.1
 
 # ORM
 SQLAlchemy==2.0.36
