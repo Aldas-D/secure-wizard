@@ -8,10 +8,8 @@ from app.extensions import db
 
 @pytest.fixture
 def csrf_app():
-    app = create_app("development")
-    app.config["TESTING"] = True
+    app = create_app("testing")
     app.config["WTF_CSRF_ENABLED"] = True
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
     app.config["SERVER_NAME"] = "localhost"
 
     with app.app_context():
